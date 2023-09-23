@@ -41,11 +41,6 @@ public class Config
         disableMoreWorldOptions = BUILDER.comment("Toggle the more world options button").define("disable_more_world_options", true);
         BUILDER.pop();
 
-        BUILDER.push("main_menu_settings");
-        disableMultiplayer = BUILDER.comment("Toggle the multiplayer button").define("disable_multiplayer", true);
-        disableSingleplayer = BUILDER.comment("Toggle the singleplayer button").define("disable_singleplayer", false);
-        BUILDER.pop();
-
         SPEC = BUILDER.build();
     }
 }

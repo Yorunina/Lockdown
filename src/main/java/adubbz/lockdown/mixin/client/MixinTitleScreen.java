@@ -4,10 +4,7 @@
  ******************************************************************************/
 package adubbz.lockdown.mixin.client;
 
-import adubbz.lockdown.Config;
-import adubbz.lockdown.Lockdown;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.Widget;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.network.chat.Component;
@@ -35,28 +32,5 @@ public abstract class MixinTitleScreen extends Screen
         Button optionsButton = (Button)this.renderables.get(5);
         Button quitButton = (Button)this.renderables.get(6);
         Button accessibilityButton = (Button)this.renderables.get(7);
-
-        if (Config.disableSingleplayer.get())
-        {
-            singleplayerButton.visible = false;
-            multiplayerButton.y -= 24;
-            realmsButton.y -= 24;
-            modsButton.y -= 24;
-            languageButton.y -= 24;
-            optionsButton.y -= 24;
-            quitButton.y -= 24;
-            accessibilityButton.y -= 24;
-        }
-
-        if (Config.disableMultiplayer.get())
-        {
-            multiplayerButton.visible = false;
-            realmsButton.y -= 24;
-            modsButton.y -= 24;
-            languageButton.y -= 24;
-            optionsButton.y -= 24;
-            quitButton.y -= 24;
-            accessibilityButton.y -= 24;
-        }
     }
 }
