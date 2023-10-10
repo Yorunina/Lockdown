@@ -16,6 +16,7 @@ import net.minecraft.world.level.storage.LevelStorageSource;
 import org.apache.commons.io.FileUtils;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -46,7 +47,7 @@ public abstract class MixinCreateWorldScreen extends Screen {
 
         // Copy the world
         try {
-            String fileName = checkSameMapName(gameDirectory, mapName, 1);
+            String fileName = lockdown$checkSameMapName(gameDirectory, mapName, 0);
             FileUtils.copyDirectory(templateDirectory, new File(gameDirectory + File.separator + "saves" + File.separator + fileName));
         } catch (IOException e) {
             Lockdown.LOGGER.error("The template world does not exist at " + templateDirectory, e);
@@ -71,14 +72,17 @@ public abstract class MixinCreateWorldScreen extends Screen {
         ci.cancel();
     }
 
-    private String checkSameMapName(File gameDirectory, String uiName, Integer startIndex) {
+    @Unique
+    private String lockdown$checkSameMapName(File gameDirectory, String uiName, Integer startIndex) {
         String expectName = String.format("%s-%d", uiName, startIndex);
+        if (startIndex == 0) {
+            expectName = uiName;
+        }
         File saveFile = new File(gameDirectory + File.separator + "saves" + File.separator + expectName);
         if (saveFile.exists()) {
-            uiName = checkSameMapName(gameDirectory, uiName, startIndex + 1);
+            return lockdown$checkSameMapName(gameDirectory, uiName, startIndex + 1);
         } else {
             return expectName;
         }
-        return uiName;
     }
 }
